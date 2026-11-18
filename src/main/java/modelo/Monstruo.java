@@ -19,6 +19,7 @@ public abstract class Monstruo {
     private int ataque;
     private int defensa;
     private Posicion posicion;
+    private boolean atacoEnTurno;
 
     /**
      * Constructor protegido: solo las subclases pueden crear monstruos.
@@ -33,6 +34,7 @@ public abstract class Monstruo {
         setAtaque(ataque);
         setDefensa(defensa);
         setPosicion(posicion);
+        this.atacoEnTurno = false;
         totalCreados++;
     }
 
@@ -72,6 +74,64 @@ public abstract class Monstruo {
      */
     public int getPuntosDeBatalla() {
         return estaEnAtaque() ? ataque : defensa;
+    }
+
+    /**
+     * @return true si el monstruo puede declarar un ataque en este turno
+     */
+    public boolean puedeAtacar() {
+        return estaEnAtaque() && !atacoEnTurno;
+    }
+
+    /**
+     * @return true si el monstruo ya atacó en el turno actual
+     */
+    public boolean yaAtaco() {
+        return atacoEnTurno;
+    }
+
+    /**
+     * Registra que el monstruo declaró un ataque en el turno actual.
+     *
+     * @throws DueloException si está en defensa o si ya atacó en este turno
+     */
+    public void registrarAtaque() throws DueloException {
+        if (!estaEnAtaque()) {
+            throw new DueloException(nombre + " está en posición de defensa y no puede atacar.");
+        }
+        if (atacoEnTurno) {
+            throw new DueloException(nombre + " ya atacó en este turno.");
+        }
+        atacoEnTurno = true;
+    }
+
+    /**
+     * Cambia el monstruo a la posición contraria (sobrecarga sin parámetros).
+     *
+     * @throws DueloException si el monstruo ya atacó en este turno
+     */
+    public void cambiarPosicion() throws DueloException {
+        cambiarPosicion(posicion.contraria());
+    }
+
+    /**
+     * Cambia el monstruo a una posición específica (sobrecarga con parámetro).
+     *
+     * @param nuevaPosicion posición a la que pasa el monstruo
+     * @throws DueloException si el monstruo ya atacó en este turno
+     */
+    public void cambiarPosicion(Posicion nuevaPosicion) throws DueloException {
+        if (atacoEnTurno) {
+            throw new DueloException(nombre + " ya atacó en este turno y no puede cambiar de posición.");
+        }
+        setPosicion(nuevaPosicion);
+    }
+
+    /**
+     * Habilita de nuevo al monstruo para atacar al comenzar un turno.
+     */
+    public void reiniciarTurno() {
+        atacoEnTurno = false;
     }
 
     // ------------------------------------------------------------------

@@ -93,4 +93,46 @@ class MonstruoTest {
         assertTrue(texto.contains("Efecto"));
         assertTrue(texto.contains("Defensa"));
     }
+
+    @Test
+    void cambiarPosicionSinParametrosAlternaLaPosicion() throws DueloException {
+        normal.cambiarPosicion();
+        assertEquals(Posicion.DEFENSA, normal.getPosicion());
+        normal.cambiarPosicion();
+        assertEquals(Posicion.ATAQUE, normal.getPosicion());
+    }
+
+    @Test
+    void cambiarPosicionConParametroAsignaLaPosicion() throws DueloException {
+        efecto.cambiarPosicion(Posicion.ATAQUE);
+        assertEquals(Posicion.ATAQUE, efecto.getPosicion());
+    }
+
+    @Test
+    void monstruoEnDefensaNoPuedeAtacar() {
+        assertFalse(efecto.puedeAtacar());
+        assertThrows(DueloException.class, efecto::registrarAtaque);
+    }
+
+    @Test
+    void monstruoSoloAtacaUnaVezPorTurno() throws DueloException {
+        assertTrue(normal.puedeAtacar());
+        normal.registrarAtaque();
+        assertTrue(normal.yaAtaco());
+        assertFalse(normal.puedeAtacar());
+        assertThrows(DueloException.class, normal::registrarAtaque);
+    }
+
+    @Test
+    void noPuedeCambiarDePosicionDespuesDeAtacar() throws DueloException {
+        normal.registrarAtaque();
+        assertThrows(DueloException.class, normal::cambiarPosicion);
+    }
+
+    @Test
+    void reiniciarTurnoPermiteAtacarDeNuevo() throws DueloException {
+        normal.registrarAtaque();
+        normal.reiniciarTurno();
+        assertTrue(normal.puedeAtacar());
+    }
 }

@@ -123,4 +123,13 @@ public class Jugador {
     public boolean estaDerrotado() {
         return puntosVida == 0;
     }
+
+    /**
+     * Al comenzar un nuevo turno, todos sus monstruos pueden volver a atacar.
+     */
+    public void reiniciarAtaques() {
+        for (Monstruo monstruo : campo) {
+            monstruo.reiniciarTurno();
+        }
+    }
 }
