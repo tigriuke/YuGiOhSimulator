@@ -30,10 +30,10 @@ public abstract class Monstruo {
      * @param posicion posición inicial en el campo
      */
     protected Monstruo(String nombre, int ataque, int defensa, Posicion posicion) {
-        setNombre(nombre);
-        setAtaque(ataque);
-        setDefensa(defensa);
-        setPosicion(posicion);
+        this.nombre = validarNombre(nombre);
+        this.ataque = validarPuntos(ataque, "ATQ");
+        this.defensa = validarPuntos(defensa, "DEF");
+        this.posicion = validarPosicion(posicion);
         this.atacoEnTurno = false;
         totalCreados++;
     }
@@ -143,10 +143,7 @@ public abstract class Monstruo {
     }
 
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del monstruo no puede estar vacío.");
-        }
-        this.nombre = nombre.trim();
+        this.nombre = validarNombre(nombre);
     }
 
     public int getAtaque() {
@@ -154,8 +151,7 @@ public abstract class Monstruo {
     }
 
     public void setAtaque(int ataque) {
-        validarPuntos(ataque, "ATQ");
-        this.ataque = ataque;
+        this.ataque = validarPuntos(ataque, "ATQ");
     }
 
     public int getDefensa() {
@@ -163,8 +159,7 @@ public abstract class Monstruo {
     }
 
     public void setDefensa(int defensa) {
-        validarPuntos(defensa, "DEF");
-        this.defensa = defensa;
+        this.defensa = validarPuntos(defensa, "DEF");
     }
 
     public Posicion getPosicion() {
@@ -172,10 +167,7 @@ public abstract class Monstruo {
     }
 
     public void setPosicion(Posicion posicion) {
-        if (posicion == null) {
-            throw new IllegalArgumentException("La posición del monstruo es obligatoria.");
-        }
-        this.posicion = posicion;
+        this.posicion = validarPosicion(posicion);
     }
 
     /**
@@ -185,10 +177,30 @@ public abstract class Monstruo {
         return totalCreados;
     }
 
-    private static void validarPuntos(int puntos, String campo) {
+
+    // ------------------------------------------------------------------
+    // Validaciones privadas (las usan el constructor y los setters)
+    // ------------------------------------------------------------------
+
+    private static String validarNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del monstruo no puede estar vacío.");
+        }
+        return nombre.trim();
+    }
+
+    private static int validarPuntos(int puntos, String campo) {
         if (puntos < 0 || puntos > PUNTOS_MAXIMOS) {
             throw new IllegalArgumentException(campo + " debe estar entre 0 y " + PUNTOS_MAXIMOS + ".");
         }
+        return puntos;
+    }
+
+    private static Posicion validarPosicion(Posicion posicion) {
+        if (posicion == null) {
+            throw new IllegalArgumentException("La posición del monstruo es obligatoria.");
+        }
+        return posicion;
     }
 
     @Override

@@ -10,6 +10,8 @@ package modelo;
  */
 public class DueloException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * @param mensaje explicación de la regla que se incumplió
      */

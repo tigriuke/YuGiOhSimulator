@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class VistaDuelo extends javax.swing.JFrame {
 
+    private static final long serialVersionUID = 1L;
+
     // Comandos de los botones (propiedad actionCommand asignada en el diseñador)
     public static final String CMD_INICIAR = "INICIAR";
     public static final String CMD_AGREGAR = "AGREGAR";

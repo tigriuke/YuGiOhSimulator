@@ -41,14 +41,15 @@ public class ControladorDuelo implements ActionListener {
     public ControladorDuelo(VistaDuelo vista, Duelo duelo) {
         this.vista = vista;
         this.duelo = duelo;
-        this.vista.registrarControlador(this);
-        this.vista.registrarFiltroNumerico(new FiltroNumerico());
     }
 
     /**
-     * Muestra la ventana con el estado inicial.
+     * Conecta los eventos de la vista con este controlador y muestra la
+     * ventana con el estado inicial.
      */
     public void iniciar() {
+        vista.registrarControlador(this);
+        vista.registrarFiltroNumerico(new FiltroNumerico());
         actualizarVista();
         vista.setVisible(true);
     }
