@@ -1,5 +1,10 @@
 package modelo;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Coordina el duelo entre dos jugadores: turnos, ataques y fin del duelo.
  * Aplica sobre los jugadores el resultado que calculan las
@@ -10,19 +15,24 @@ package modelo;
 public class Duelo {
 
     private final ReglasBatalla reglas;
+    private final HistorialArchivo archivo;
+    private final List<RegistroAtaque> historial;
     private Jugador jugador1;
     private Jugador jugador2;
     private Jugador jugadorEnTurno;
     private int turno;
 
     /**
-     * @param reglas reglas de cálculo de daño que usará el duelo
+     * @param reglas  reglas de cálculo de daño que usará el duelo
+     * @param archivo archivo donde se guarda el historial de combate
      */
-    public Duelo(ReglasBatalla reglas) {
-        if (reglas == null) {
-            throw new IllegalArgumentException("Las reglas de batalla son obligatorias.");
+    public Duelo(ReglasBatalla reglas, HistorialArchivo archivo) {
+        if (reglas == null || archivo == null) {
+            throw new IllegalArgumentException("Las reglas y el archivo de historial son obligatorios.");
         }
         this.reglas = reglas;
+        this.archivo = archivo;
+        this.historial = new ArrayList<>();
     }
 
     /**
@@ -41,6 +51,7 @@ public class Duelo {
         jugador2 = nuevo2;
         jugadorEnTurno = jugador1;
         turno = 1;
+        historial.clear();
     }
 
     public boolean estaIniciado() {
@@ -64,10 +75,11 @@ public class Duelo {
      *
      * @param indiceAtacante índice del monstruo atacante en el campo propio
      * @param indiceDefensor índice del monstruo atacado en el campo rival
-     * @return resultado de la batalla
+     * @return registro del ataque (también se guarda en el archivo)
      * @throws DueloException si el ataque no cumple las reglas
+     * @throws IOException    si no se pudo guardar el historial
      */
-    public ResultadoAtaque atacar(int indiceAtacante, int indiceDefensor) throws DueloException {
+    public RegistroAtaque atacar(int indiceAtacante, int indiceDefensor) throws DueloException, IOException {
         verificarDueloActivo();
         Monstruo atacante = jugadorEnTurno.obtenerMonstruo(indiceAtacante);
         Monstruo defensor = getRival().obtenerMonstruo(indiceDefensor);
@@ -80,10 +92,11 @@ public class Duelo {
      * rival no tiene monstruos en el campo.
      *
      * @param indiceAtacante índice del monstruo atacante en el campo propio
-     * @return resultado de la batalla
+     * @return registro del ataque (también se guarda en el archivo)
      * @throws DueloException si el ataque no cumple las reglas
+     * @throws IOException    si no se pudo guardar el historial
      */
-    public ResultadoAtaque atacar(int indiceAtacante) throws DueloException {
+    public RegistroAtaque atacar(int indiceAtacante) throws DueloException, IOException {
         verificarDueloActivo();
         Jugador rival = getRival();
         if (rival.tieneMonstruos()) {
@@ -172,7 +185,27 @@ public class Duelo {
         return turno;
     }
 
-    private ResultadoAtaque aplicarResultado(ResultadoAtaque resultado, Monstruo atacante, Monstruo defensor) {
+    /**
+     * @return registros de los ataques del duelo actual (solo lectura)
+     */
+    public List<RegistroAtaque> getHistorial() {
+        return Collections.unmodifiableList(historial);
+    }
+
+    /**
+     * @return todos los registros guardados en el archivo de texto
+     * @throws IOException si no se puede leer el archivo
+     */
+    public List<RegistroAtaque> leerHistorialGuardado() throws IOException {
+        return archivo.leer();
+    }
+
+    public String getRutaHistorial() {
+        return archivo.getRuta();
+    }
+
+    private RegistroAtaque aplicarResultado(ResultadoAtaque resultado, Monstruo atacante, Monstruo defensor)
+            throws IOException {
         Jugador rival = getRival();
         Jugador jugadorDaniado = null;
         if (resultado.getDanio() > 0) {
@@ -185,7 +218,18 @@ public class Duelo {
         if (resultado.isDefensorDestruido() && defensor != null) {
             rival.retirarMonstruo(defensor);
         }
-        return resultado;
+
+        String descripcion = resultado.getDescripcion();
+        if (hayGanador()) {
+            descripcion += " " + getGanador().getNombre() + " gana el duelo.";
+        }
+        RegistroAtaque registro = new RegistroAtaque(turno, jugadorEnTurno.getNombre(),
+                resultado.getAtacante(), resultado.getDefensor(), resultado.getDanio(),
+                jugadorDaniado == null ? RegistroAtaque.SIN_JUGADOR : jugadorDaniado.getNombre(),
+                descripcion);
+        historial.add(registro);
+        archivo.guardar(registro);
+        return registro;
     }
 
     private void verificarDueloActivo() throws DueloException {

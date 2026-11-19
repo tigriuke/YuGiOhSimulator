@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Pruebas del flujo del duelo: turnos, ataques, LP y fin del duelo.
@@ -17,11 +20,15 @@ import org.junit.jupiter.api.Test;
  */
 class DueloTest {
 
+    @TempDir
+    Path carpetaTemporal;
+
     private Duelo duelo;
 
     @BeforeEach
     void setUp() {
-        duelo = new Duelo(new CalculadoraDanio());
+        HistorialArchivo archivo = new HistorialArchivo(carpetaTemporal.resolve("historial.txt").toString());
+        duelo = new Duelo(new CalculadoraDanio(), archivo);
         duelo.iniciar("Ana", "Luis");
     }
 
@@ -42,7 +49,8 @@ class DueloTest {
 
     @Test
     void sinIniciarNoSePuedenInvocarMonstruos() {
-        Duelo sinIniciar = new Duelo(new CalculadoraDanio());
+        Duelo sinIniciar = new Duelo(new CalculadoraDanio(),
+                new HistorialArchivo(carpetaTemporal.resolve("otro.txt").toString()));
         assertFalse(sinIniciar.estaIniciado());
         assertNull(sinIniciar.getRival());
         assertThrows(DueloException.class, () -> sinIniciar.agregarMonstruo(1,
@@ -132,5 +140,38 @@ class DueloTest {
         assertSame(duelo.getJugador1(), duelo.getGanador());
         assertEquals(0, duelo.getJugador2().getPuntosVida());
         assertThrows(DueloException.class, () -> duelo.terminarTurno());
+    }
+
+    @Test
+    void cadaAtaqueSeGuardaEnElHistorialYEnElArchivo() throws Exception {
+        duelo.agregarMonstruo(1, new MonstruoNormal("Dragón", 2500, 2000, Posicion.ATAQUE));
+        duelo.agregarMonstruo(2, new MonstruoNormal("Guerrero", 2000, 1500, Posicion.ATAQUE));
+        RegistroAtaque registro = duelo.atacar(0, 0);
+
+        assertEquals(1, duelo.getHistorial().size());
+        List<RegistroAtaque> guardados = duelo.leerHistorialGuardado();
+        assertEquals(1, guardados.size());
+        assertEquals("Dragón", guardados.get(0).getAtacante());
+        assertEquals("Guerrero", guardados.get(0).getDefensor());
+        assertEquals(500, guardados.get(0).getDanio());
+        assertEquals("Luis", registro.getJugadorDaniado());
+    }
+
+    @Test
+    void registroSinDanioNoTieneJugadorAfectado() throws Exception {
+        duelo.agregarMonstruo(1, new MonstruoNormal("Dragón", 2000, 2000, Posicion.ATAQUE));
+        duelo.agregarMonstruo(2, new MonstruoNormal("Muro", 0, 1500, Posicion.DEFENSA));
+        RegistroAtaque registro = duelo.atacar(0, 0);
+        assertFalse(registro.huboDanio());
+        assertEquals(RegistroAtaque.SIN_JUGADOR, registro.getJugadorDaniado());
+    }
+
+    @Test
+    void iniciarUnNuevoDueloLimpiaElHistorialDeLaSesion() throws Exception {
+        duelo.agregarMonstruo(1, new MonstruoNormal("Dragón", 2500, 2000, Posicion.ATAQUE));
+        duelo.atacar(0);
+        duelo.iniciar("Carlos", "Diana");
+        assertTrue(duelo.getHistorial().isEmpty());
+        assertEquals(1, duelo.leerHistorialGuardado().size());
     }
 }
