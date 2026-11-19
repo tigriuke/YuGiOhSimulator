@@ -135,4 +135,25 @@ class MonstruoTest {
         normal.reiniciarTurno();
         assertTrue(normal.puedeAtacar());
     }
+
+    @Test
+    void toStringMuestraLaPosicionDeAtaque() {
+        assertTrue(normal.toString().contains("Normal"));
+        assertTrue(normal.toString().contains("Ataque"));
+    }
+
+    @Test
+    void settersRechazanNombreYPosicionInvalidos() {
+        assertThrows(IllegalArgumentException.class, () -> normal.setNombre(""));
+        assertThrows(IllegalArgumentException.class, () -> normal.setPosicion(null));
+        normal.setNombre("  Guerrero de Plata ");
+        assertEquals("Guerrero de Plata", normal.getNombre());
+        normal.setDefensa(1500);
+        assertEquals(1500, normal.getDefensa());
+    }
+
+    @Test
+    void elMonstruoDeEfectoDescribeSuEfecto() {
+        assertTrue(MonstruoEfecto.DESCRIPCION_EFECTO.contains("perforante"));
+    }
 }

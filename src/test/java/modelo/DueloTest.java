@@ -174,4 +174,52 @@ class DueloTest {
         assertTrue(duelo.getHistorial().isEmpty());
         assertEquals(1, duelo.leerHistorialGuardado().size());
     }
+
+    @Test
+    void reglasOArchivoNulosLanzanExcepcion() {
+        HistorialArchivo archivo = new HistorialArchivo(carpetaTemporal.resolve("x.txt").toString());
+        assertThrows(IllegalArgumentException.class, () -> new Duelo(null, archivo));
+        assertThrows(IllegalArgumentException.class, () -> new Duelo(new CalculadoraDanio(), null));
+    }
+
+    @Test
+    void numeroDeJugadorInvalidoLanzaExcepcion() {
+        assertSame(duelo.getJugador2(), duelo.getJugador(2));
+        assertThrows(IllegalArgumentException.class, () -> duelo.getJugador(3));
+    }
+
+    @Test
+    void mientrasNadieGanaNoHayGanador() {
+        assertFalse(duelo.hayGanador());
+        assertNull(duelo.getGanador());
+    }
+
+    @Test
+    void ataquePerdedorDestruyeAlAtacanteYLoDania() throws Exception {
+        duelo.agregarMonstruo(1, new MonstruoNormal("Duende", 1000, 500, Posicion.ATAQUE));
+        duelo.agregarMonstruo(2, new MonstruoNormal("Dragón", 2500, 2000, Posicion.ATAQUE));
+        RegistroAtaque registro = duelo.atacar(0, 0);
+        assertFalse(duelo.getJugador1().tieneMonstruos());
+        assertEquals(6500, duelo.getJugador1().getPuntosVida());
+        assertEquals("Ana", registro.getJugadorDaniado());
+    }
+
+    @Test
+    void elJugador2TambienPuedeGanarElDuelo() throws Exception {
+        duelo.terminarTurno();
+        duelo.agregarMonstruo(2, new MonstruoNormal("Titán", 5000, 5000, Posicion.ATAQUE));
+        duelo.atacar(0);
+        duelo.terminarTurno();
+        duelo.terminarTurno();
+        RegistroAtaque registro = duelo.atacar(0);
+        assertSame(duelo.getJugador2(), duelo.getGanador());
+        assertTrue(registro.getResultado().contains("Luis gana el duelo"));
+        assertThrows(DueloException.class,
+                () -> duelo.agregarMonstruo(1, new MonstruoNormal("Tarde", 100, 100, Posicion.ATAQUE)));
+    }
+
+    @Test
+    void laRutaDelHistorialApuntaAlArchivoDelDuelo() {
+        assertTrue(duelo.getRutaHistorial().endsWith("historial.txt"));
+    }
 }

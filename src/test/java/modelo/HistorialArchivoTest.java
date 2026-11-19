@@ -93,4 +93,15 @@ class HistorialArchivoTest {
     void guardarRegistroNuloLanzaExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> archivo.guardar(null));
     }
+
+    @Test
+    void constructorPorDefectoUsaHistorialCombateTxt() {
+        HistorialArchivo porDefecto = new HistorialArchivo();
+        assertTrue(porDefecto.getRuta().endsWith(HistorialArchivo.NOMBRE_POR_DEFECTO));
+    }
+
+    @Test
+    void getRutaDevuelveLaRutaAbsoluta() {
+        assertEquals(ruta.toAbsolutePath().toString(), archivo.getRuta());
+    }
 }

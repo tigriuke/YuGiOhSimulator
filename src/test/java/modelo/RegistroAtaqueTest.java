@@ -67,4 +67,17 @@ class RegistroAtaqueTest {
         assertTrue(conDanio.toString().contains("Turno 2"));
         assertTrue(conDanio.toString().contains("2500 a Luis"));
     }
+
+    @Test
+    void lineaNulaLanzaExcepcion() {
+        assertThrows(IllegalArgumentException.class, () -> RegistroAtaque.desdeLinea(null));
+    }
+
+    @Test
+    void toStringSinDanioNoNombraAUnJugador() {
+        RegistroAtaque sinDanio = new RegistroAtaque(4, "Ana", "Dragón", "Muro", 0,
+                RegistroAtaque.SIN_JUGADOR, "Sin daño");
+        assertTrue(sinDanio.toString().contains("Daño: 0 |"));
+        assertFalse(sinDanio.toString().contains(" a -"));
+    }
 }
