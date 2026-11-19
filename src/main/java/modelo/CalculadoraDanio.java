@@ -26,7 +26,7 @@ public final class CalculadoraDanio implements ReglasBatalla {
         if (defensor.estaEnAtaque()) {
             return resolverAtaqueContraAtaque(atacante, defensor);
         }
-        throw new UnsupportedOperationException("Ataque contra monstruos en defensa: pendiente.");
+        return resolverAtaqueContraDefensa(atacante, defensor);
     }
 
     @Override
@@ -70,6 +70,30 @@ public final class CalculadoraDanio implements ReglasBatalla {
         }
         return new ResultadoAtaque(nombreA, nombreD, 0, false, true, true,
                 "Empate de ATQ: " + nombreA + " y " + nombreD + " se destruyen mutuamente.");
+    }
+
+    private ResultadoAtaque resolverAtaqueContraDefensa(Monstruo atacante, Monstruo defensor) {
+        String nombreA = atacante.getNombre();
+        String nombreD = defensor.getNombre();
+        int atq = atacante.getAtaque();
+        int def = defensor.getDefensa();
+        int diferencia = calcularDiferencia(atq, def);
+
+        if (atq > def) {
+            if (atacante.esPerforante()) {
+                return new ResultadoAtaque(nombreA, nombreD, diferencia, false, false, true,
+                        nombreA + " destruye a " + nombreD + " y su daño perforante inflige "
+                        + diferencia + " al rival.");
+            }
+            return new ResultadoAtaque(nombreA, nombreD, 0, false, false, true,
+                    nombreA + " destruye a " + nombreD + " (en defensa). No hay daño a los LP.");
+        }
+        if (atq < def) {
+            return new ResultadoAtaque(nombreA, nombreD, diferencia, true, false, false,
+                    "La DEF de " + nombreD + " es mayor. El atacante recibe " + diferencia + " de daño.");
+        }
+        return new ResultadoAtaque(nombreA, nombreD, 0, false, false, false,
+                "El ATQ es igual a la DEF de " + nombreD + ": no hay destrucción ni daño.");
     }
 
     private static void validarMonstruo(Monstruo monstruo, String rol) {
