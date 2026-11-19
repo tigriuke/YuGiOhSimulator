@@ -138,6 +138,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnIniciar">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="INICIAR"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="42" green="29" red="1e" type="rgb"/>
                 </Property>
@@ -302,6 +303,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnAtacar">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="ATACAR"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="2b" green="39" red="c0" type="rgb"/>
                 </Property>
@@ -309,6 +311,7 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="¡Atacar!"/>
+                <Property name="toolTipText" type="java.lang.String" value="El monstruo seleccionado ataca al objetivo elegido"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -318,7 +321,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnCambiarPosicion">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="CAMBIAR_POSICION"/>
                 <Property name="text" type="java.lang.String" value="Cambiar posición"/>
+                <Property name="toolTipText" type="java.lang.String" value="Alterna ataque/defensa del monstruo seleccionado"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -328,6 +333,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnTerminarTurno">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="TERMINAR_TURNO"/>
                 <Property name="text" type="java.lang.String" value="Terminar turno"/>
               </Properties>
               <Constraints>
@@ -462,6 +468,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JTextField" name="txtAtaque">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="Solo números entre 0 y 5000"/>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="335" y="26" width="80" height="26"/>
@@ -479,6 +488,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JTextField" name="txtDefensa">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="Solo números entre 0 y 5000"/>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="475" y="26" width="80" height="26"/>
@@ -531,6 +543,7 @@
                     <StringItem index="1" value="Efecto (daño perforante)"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Los monstruos de efecto infligen daño perforante"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -571,6 +584,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnAgregar">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="AGREGAR"/>
                 <Property name="text" type="java.lang.String" value="Invocar"/>
               </Properties>
               <Constraints>
@@ -627,7 +641,9 @@
             </Container>
             <Component class="javax.swing.JButton" name="btnVerHistorial">
               <Properties>
+                <Property name="actionCommand" type="java.lang.String" value="VER_HISTORIAL"/>
                 <Property name="text" type="java.lang.String" value="Historial guardado"/>
+                <Property name="toolTipText" type="java.lang.String" value="Muestra los ataques guardados en historial_combate.txt"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

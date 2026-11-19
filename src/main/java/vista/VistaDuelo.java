@@ -1,5 +1,14 @@
 package vista;
 
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 /**
  * Vista del simulador: JFrame Form diseñado con el editor visual de NetBeans.
  * Solo muestra datos y entrega lo que escribe el usuario; no contiene reglas
@@ -9,7 +18,13 @@ package vista;
  */
 public class VistaDuelo extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaDuelo.class.getName());
+    // Comandos de los botones (propiedad actionCommand asignada en el diseñador)
+    public static final String CMD_INICIAR = "INICIAR";
+    public static final String CMD_AGREGAR = "AGREGAR";
+    public static final String CMD_ATACAR = "ATACAR";
+    public static final String CMD_CAMBIAR_POSICION = "CAMBIAR_POSICION";
+    public static final String CMD_TERMINAR_TURNO = "TERMINAR_TURNO";
+    public static final String CMD_VER_HISTORIAL = "VER_HISTORIAL";
 
     /**
      * Creates new form VistaDuelo
@@ -117,6 +132,7 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlInicio.add(txtJugador2);
         txtJugador2.setBounds(380, 24, 200, 26);
 
+        btnIniciar.setActionCommand("INICIAR");
         btnIniciar.setBackground(new java.awt.Color(30, 41, 66));
         btnIniciar.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciar.setText("Iniciar duelo");
@@ -173,16 +189,21 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlBatalla.add(cmbObjetivo);
         cmbObjetivo.setBounds(15, 124, 270, 26);
 
+        btnAtacar.setActionCommand("ATACAR");
         btnAtacar.setBackground(new java.awt.Color(192, 57, 43));
         btnAtacar.setForeground(new java.awt.Color(255, 255, 255));
         btnAtacar.setText("¡Atacar!");
+        btnAtacar.setToolTipText("El monstruo seleccionado ataca al objetivo elegido");
         pnlBatalla.add(btnAtacar);
         btnAtacar.setBounds(15, 162, 270, 36);
 
+        btnCambiarPosicion.setActionCommand("CAMBIAR_POSICION");
         btnCambiarPosicion.setText("Cambiar posición");
+        btnCambiarPosicion.setToolTipText("Alterna ataque/defensa del monstruo seleccionado");
         pnlBatalla.add(btnCambiarPosicion);
         btnCambiarPosicion.setBounds(15, 208, 132, 30);
 
+        btnTerminarTurno.setActionCommand("TERMINAR_TURNO");
         btnTerminarTurno.setText("Terminar turno");
         pnlBatalla.add(btnTerminarTurno);
         btnTerminarTurno.setBounds(153, 208, 132, 30);
@@ -230,6 +251,7 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlInvocar.add(lblAtaque);
         lblAtaque.setBounds(295, 26, 40, 26);
 
+        txtAtaque.setToolTipText("Solo números entre 0 y 5000");
         pnlInvocar.add(txtAtaque);
         txtAtaque.setBounds(335, 26, 80, 26);
 
@@ -237,6 +259,7 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlInvocar.add(lblDefensa);
         lblDefensa.setBounds(435, 26, 40, 26);
 
+        txtDefensa.setToolTipText("Solo números entre 0 y 5000");
         pnlInvocar.add(txtDefensa);
         txtDefensa.setBounds(475, 26, 80, 26);
 
@@ -253,6 +276,7 @@ public class VistaDuelo extends javax.swing.JFrame {
         lblTipo.setBounds(15, 60, 60, 26);
 
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Efecto (daño perforante)" }));
+        cmbTipo.setToolTipText("Los monstruos de efecto infligen daño perforante");
         pnlInvocar.add(cmbTipo);
         cmbTipo.setBounds(75, 60, 200, 26);
 
@@ -264,6 +288,7 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlInvocar.add(cmbDueno);
         cmbDueno.setBounds(345, 60, 210, 26);
 
+        btnAgregar.setActionCommand("AGREGAR");
         btnAgregar.setText("Invocar");
         pnlInvocar.add(btnAgregar);
         btnAgregar.setBounds(785, 40, 170, 32);
@@ -285,7 +310,9 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlHistorial.add(scrHistorial);
         scrHistorial.setBounds(15, 24, 755, 112);
 
+        btnVerHistorial.setActionCommand("VER_HISTORIAL");
         btnVerHistorial.setText("Historial guardado");
+        btnVerHistorial.setToolTipText("Muestra los ataques guardados en historial_combate.txt");
         pnlHistorial.add(btnVerHistorial);
         btnVerHistorial.setBounds(785, 24, 170, 32);
 
@@ -298,29 +325,164 @@ public class VistaDuelo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    // ==================================================================
+    // Métodos que usa el controlador (la vista no tiene lógica del juego)
+    // ==================================================================
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new VistaDuelo().setVisible(true));
+    /**
+     * Registra al controlador como oyente de todos los botones.
+     *
+     * @param controlador objeto que atiende los eventos de la ventana
+     */
+    public void registrarControlador(ActionListener controlador) {
+        btnIniciar.addActionListener(controlador);
+        btnAgregar.addActionListener(controlador);
+        btnAtacar.addActionListener(controlador);
+        btnCambiarPosicion.addActionListener(controlador);
+        btnTerminarTurno.addActionListener(controlador);
+        btnVerHistorial.addActionListener(controlador);
+    }
+
+    /**
+     * Registra un filtro de teclado en los campos de ATQ y DEF.
+     *
+     * @param filtro oyente que descarta las teclas que no son números
+     */
+    public void registrarFiltroNumerico(KeyListener filtro) {
+        txtAtaque.addKeyListener(filtro);
+        txtDefensa.addKeyListener(filtro);
+    }
+
+    // ---------------- Datos que escribe o elige el usuario ----------------
+
+    public String getNombreJugador1() {
+        return txtJugador1.getText();
+    }
+
+    public String getNombreJugador2() {
+        return txtJugador2.getText();
+    }
+
+    public String getNombreMonstruo() {
+        return txtNombreMonstruo.getText();
+    }
+
+    public String getTextoAtaque() {
+        return txtAtaque.getText();
+    }
+
+    public String getTextoDefensa() {
+        return txtDefensa.getText();
+    }
+
+    public int getIndicePosicion() {
+        return cmbPosicion.getSelectedIndex();
+    }
+
+    public int getIndiceTipo() {
+        return cmbTipo.getSelectedIndex();
+    }
+
+    public int getIndiceDueno() {
+        return cmbDueno.getSelectedIndex();
+    }
+
+    public int getIndiceAtacante() {
+        return cmbAtacante.getSelectedIndex();
+    }
+
+    public int getIndiceObjetivo() {
+        return cmbObjetivo.getSelectedIndex();
+    }
+
+    // ---------------- Presentación del estado del duelo ----------------
+
+    public void mostrarJugador1(String nombre, int lp, boolean enTurno, List<String> campo) {
+        mostrarJugador(lblNombre1, lblLp1, lstCampo1, nombre, lp, enTurno, campo);
+    }
+
+    public void mostrarJugador2(String nombre, int lp, boolean enTurno, List<String> campo) {
+        mostrarJugador(lblNombre2, lblLp2, lstCampo2, nombre, lp, enTurno, campo);
+    }
+
+    public void mostrarTurno(String texto) {
+        lblTurno.setText(texto);
+    }
+
+    public void cargarNombresDuenos(String jugador1, String jugador2) {
+        cargarOpciones(cmbDueno, List.of(jugador1, jugador2));
+    }
+
+    public void cargarOpcionesAtacante(List<String> opciones) {
+        cargarOpciones(cmbAtacante, opciones);
+    }
+
+    public void cargarOpcionesObjetivo(List<String> opciones) {
+        cargarOpciones(cmbObjetivo, opciones);
+    }
+
+    /**
+     * @param invocar true para permitir invocar monstruos
+     * @param batalla true para permitir atacar, cambiar posición y terminar turno
+     */
+    public void habilitarAcciones(boolean invocar, boolean batalla) {
+        btnAgregar.setEnabled(invocar);
+        btnAtacar.setEnabled(batalla);
+        btnCambiarPosicion.setEnabled(batalla);
+        btnTerminarTurno.setEnabled(batalla);
+    }
+
+    public void limpiarFormularioMonstruo() {
+        txtNombreMonstruo.setText("");
+        txtAtaque.setText("");
+        txtDefensa.setText("");
+        txtNombreMonstruo.requestFocus();
+    }
+
+    public void agregarAlHistorial(String linea) {
+        txtHistorial.append(linea + "\n");
+        txtHistorial.setCaretPosition(txtHistorial.getDocument().getLength());
+    }
+
+    public void limpiarHistorial() {
+        txtHistorial.setText("");
+    }
+
+    // ---------------- Mensajes ----------------
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Duelo", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void mostrarAdvertencia(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Regla del duelo", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean confirmar(String pregunta) {
+        return JOptionPane.showConfirmDialog(this, pregunta, "Confirmar",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
+
+    // ---------------- Auxiliares ----------------
+
+    private void mostrarJugador(JLabel lblNombre, JLabel lblLp, JList<String> lista,
+            String nombre, int lp, boolean enTurno, List<String> campo) {
+        lblNombre.setText(enTurno ? "» " + nombre + " (en turno)" : nombre);
+        lblLp.setText("LP: " + lp);
+        lista.setListData(campo.toArray(new String[0]));
+    }
+
+    /** Cambia las opciones de un combo conservando la selección si sigue siendo válida. */
+    private void cargarOpciones(JComboBox<String> combo, List<String> opciones) {
+        int anterior = combo.getSelectedIndex();
+        combo.setModel(new DefaultComboBoxModel<>(opciones.toArray(new String[0])));
+        if (anterior >= 0 && anterior < opciones.size()) {
+            combo.setSelectedIndex(anterior);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
