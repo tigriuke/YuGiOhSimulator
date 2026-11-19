@@ -1,0 +1,9 @@
+# turno;jugador_atacante;monstruo_atacante;defensor;daño;jugador_que_recibe_daño;resultado
+1;Ana;Dragón de Obsidiana;Caballero Carmesí;400;Luis;Dragón de Obsidiana destruye a Caballero Carmesí. El rival recibe 400 de daño.
+1;Ana;Lancero Veloz;Muro de Cristal;400;Ana;La DEF de Muro de Cristal es mayor. El atacante recibe 400 de daño.
+2;Luis;Hechicera Lunar;Lancero Veloz;100;Ana;Hechicera Lunar destruye a Lancero Veloz. El rival recibe 100 de daño.
+3;Ana;Dragón de Obsidiana;Hechicera Lunar;700;Luis;Dragón de Obsidiana destruye a Hechicera Lunar. El rival recibe 700 de daño.
+3;Ana;Golem de Piedra;Muro de Cristal;1000;Ana;La DEF de Muro de Cristal es mayor. El atacante recibe 1000 de daño.
+5;Ana;Arquera del Viento;Escudero Novato;1000;Luis;Arquera del Viento destruye a Escudero Novato y su daño perforante inflige 1000 al rival.
+5;Ana;Dragón de Obsidiana;Muro de Cristal;0;-;Dragón de Obsidiana destruye a Muro de Cristal (en defensa). No hay daño a los LP.
+5;Ana;Golem de Piedra;Ataque directo;1000;Luis;Golem de Piedra ataca directamente e inflige 1000 de daño.
