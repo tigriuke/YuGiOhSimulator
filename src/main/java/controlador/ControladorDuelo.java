@@ -72,6 +72,9 @@ public class ControladorDuelo implements ActionListener {
                 case VistaDuelo.CMD_TERMINAR_TURNO:
                     terminarTurno();
                     break;
+                case VistaDuelo.CMD_VER_HISTORIAL:
+                    verHistorialGuardado();
+                    break;
                 default:
                     break;
             }
@@ -161,6 +164,16 @@ public class ControladorDuelo implements ActionListener {
         duelo.terminarTurno();
         vista.agregarAlHistorial("--- Turno " + duelo.getTurno() + ": ahora ataca "
                 + duelo.getJugadorEnTurno().getNombre() + " ---");
+    }
+
+    private void verHistorialGuardado() throws IOException {
+        List<RegistroAtaque> registros = duelo.leerHistorialGuardado();
+        vista.agregarAlHistorial("=== Historial guardado en " + duelo.getRutaHistorial()
+                + " (" + registros.size() + " ataques) ===");
+        for (RegistroAtaque registro : registros) {
+            vista.agregarAlHistorial(registro.toString());
+        }
+        vista.agregarAlHistorial("=== Fin del historial guardado ===");
     }
 
     // ------------------------------------------------------------------
