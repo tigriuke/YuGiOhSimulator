@@ -8,6 +8,12 @@ package modelo;
  */
 public class RegistroAtaque {
 
+    /** Separador de campos en el archivo de texto. */
+    public static final String SEPARADOR = ";";
+
+    /** Cantidad de campos que tiene cada línea del archivo. */
+    private static final int CAMPOS = 7;
+
     /** Valor que se guarda cuando ningún jugador recibe daño. */
     public static final String SIN_JUGADOR = "-";
 
@@ -79,6 +85,46 @@ public class RegistroAtaque {
      */
     public boolean huboDanio() {
         return danio > 0;
+    }
+
+    /**
+     * Convierte el registro en una línea de texto plano para el archivo.
+     *
+     * @return campos separados por {@link #SEPARADOR}
+     */
+    public String aLineaArchivo() {
+        return turno + SEPARADOR + limpiar(jugadorAtacante) + SEPARADOR + limpiar(atacante)
+                + SEPARADOR + limpiar(defensor) + SEPARADOR + danio + SEPARADOR
+                + limpiar(jugadorDaniado) + SEPARADOR + limpiar(resultado);
+    }
+
+    /**
+     * Reconstruye un registro a partir de una línea del archivo.
+     *
+     * @param linea línea leída del archivo de historial
+     * @return el registro correspondiente
+     * @throws IllegalArgumentException si la línea no tiene el formato esperado
+     */
+    public static RegistroAtaque desdeLinea(String linea) {
+        if (linea == null) {
+            throw new IllegalArgumentException("La línea no puede ser nula.");
+        }
+        String[] partes = linea.split(SEPARADOR, -1);
+        if (partes.length != CAMPOS) {
+            throw new IllegalArgumentException("Línea de historial inválida: " + linea);
+        }
+        try {
+            int turno = Integer.parseInt(partes[0].trim());
+            int danio = Integer.parseInt(partes[4].trim());
+            return new RegistroAtaque(turno, partes[1], partes[2], partes[3], danio, partes[5], partes[6]);
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Turno o daño no numérico en la línea: " + linea, ex);
+        }
+    }
+
+    /** Evita que un nombre con ';' o saltos de línea dañe el formato del archivo. */
+    private static String limpiar(String texto) {
+        return texto.replace(SEPARADOR, ",").replace("\r", " ").replace("\n", " ");
     }
 
     @Override
