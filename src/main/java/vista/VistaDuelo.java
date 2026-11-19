@@ -43,12 +43,39 @@ public class VistaDuelo extends javax.swing.JFrame {
         lblCampo1 = new javax.swing.JLabel();
         scrCampo1 = new javax.swing.JScrollPane();
         lstCampo1 = new javax.swing.JList<>();
+        pnlBatalla = new javax.swing.JPanel();
+        lblTurno = new javax.swing.JLabel();
+        lblAtacante = new javax.swing.JLabel();
+        cmbAtacante = new javax.swing.JComboBox<>();
+        lblObjetivo = new javax.swing.JLabel();
+        cmbObjetivo = new javax.swing.JComboBox<>();
+        btnAtacar = new javax.swing.JButton();
+        btnCambiarPosicion = new javax.swing.JButton();
+        btnTerminarTurno = new javax.swing.JButton();
         pnlJugador2 = new javax.swing.JPanel();
         lblNombre2 = new javax.swing.JLabel();
         lblLp2 = new javax.swing.JLabel();
         lblCampo2 = new javax.swing.JLabel();
         scrCampo2 = new javax.swing.JScrollPane();
         lstCampo2 = new javax.swing.JList<>();
+        pnlInvocar = new javax.swing.JPanel();
+        lblNombreMonstruo = new javax.swing.JLabel();
+        txtNombreMonstruo = new javax.swing.JTextField();
+        lblAtaque = new javax.swing.JLabel();
+        txtAtaque = new javax.swing.JTextField();
+        lblDefensa = new javax.swing.JLabel();
+        txtDefensa = new javax.swing.JTextField();
+        lblPosicion = new javax.swing.JLabel();
+        cmbPosicion = new javax.swing.JComboBox<>();
+        lblTipo = new javax.swing.JLabel();
+        cmbTipo = new javax.swing.JComboBox<>();
+        lblDueno = new javax.swing.JLabel();
+        cmbDueno = new javax.swing.JComboBox<>();
+        btnAgregar = new javax.swing.JButton();
+        pnlHistorial = new javax.swing.JPanel();
+        scrHistorial = new javax.swing.JScrollPane();
+        txtHistorial = new javax.swing.JTextArea();
+        btnVerHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulador de Fase de Batalla - Duelo de Monstruos");
@@ -124,6 +151,45 @@ public class VistaDuelo extends javax.swing.JFrame {
         pnlFondo.add(pnlJugador1);
         pnlJugador1.setBounds(15, 146, 320, 270);
 
+        pnlBatalla.setBackground(new java.awt.Color(255, 255, 255));
+        pnlBatalla.setBorder(javax.swing.BorderFactory.createTitledBorder("Fase de batalla"));
+        pnlBatalla.setLayout(null);
+
+        lblTurno.setText("Inicie el duelo");
+        pnlBatalla.add(lblTurno);
+        lblTurno.setBounds(15, 24, 270, 22);
+
+        lblAtacante.setText("Monstruo atacante:");
+        pnlBatalla.add(lblAtacante);
+        lblAtacante.setBounds(15, 52, 270, 18);
+
+        pnlBatalla.add(cmbAtacante);
+        cmbAtacante.setBounds(15, 72, 270, 26);
+
+        lblObjetivo.setText("Objetivo:");
+        pnlBatalla.add(lblObjetivo);
+        lblObjetivo.setBounds(15, 104, 270, 18);
+
+        pnlBatalla.add(cmbObjetivo);
+        cmbObjetivo.setBounds(15, 124, 270, 26);
+
+        btnAtacar.setBackground(new java.awt.Color(192, 57, 43));
+        btnAtacar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtacar.setText("¡Atacar!");
+        pnlBatalla.add(btnAtacar);
+        btnAtacar.setBounds(15, 162, 270, 36);
+
+        btnCambiarPosicion.setText("Cambiar posición");
+        pnlBatalla.add(btnCambiarPosicion);
+        btnCambiarPosicion.setBounds(15, 208, 132, 30);
+
+        btnTerminarTurno.setText("Terminar turno");
+        pnlBatalla.add(btnTerminarTurno);
+        btnTerminarTurno.setBounds(153, 208, 132, 30);
+
+        pnlFondo.add(pnlBatalla);
+        pnlBatalla.setBounds(350, 146, 300, 270);
+
         pnlJugador2.setBackground(new java.awt.Color(255, 255, 255));
         pnlJugador2.setBorder(javax.swing.BorderFactory.createTitledBorder("Jugador 2"));
         pnlJugador2.setLayout(null);
@@ -148,6 +214,83 @@ public class VistaDuelo extends javax.swing.JFrame {
 
         pnlFondo.add(pnlJugador2);
         pnlJugador2.setBounds(665, 146, 320, 270);
+
+        pnlInvocar.setBackground(new java.awt.Color(255, 255, 255));
+        pnlInvocar.setBorder(javax.swing.BorderFactory.createTitledBorder("Invocar monstruo"));
+        pnlInvocar.setLayout(null);
+
+        lblNombreMonstruo.setText("Nombre:");
+        pnlInvocar.add(lblNombreMonstruo);
+        lblNombreMonstruo.setBounds(15, 26, 60, 26);
+
+        pnlInvocar.add(txtNombreMonstruo);
+        txtNombreMonstruo.setBounds(75, 26, 200, 26);
+
+        lblAtaque.setText("ATQ:");
+        pnlInvocar.add(lblAtaque);
+        lblAtaque.setBounds(295, 26, 40, 26);
+
+        pnlInvocar.add(txtAtaque);
+        txtAtaque.setBounds(335, 26, 80, 26);
+
+        lblDefensa.setText("DEF:");
+        pnlInvocar.add(lblDefensa);
+        lblDefensa.setBounds(435, 26, 40, 26);
+
+        pnlInvocar.add(txtDefensa);
+        txtDefensa.setBounds(475, 26, 80, 26);
+
+        lblPosicion.setText("Posición:");
+        pnlInvocar.add(lblPosicion);
+        lblPosicion.setBounds(575, 26, 65, 26);
+
+        cmbPosicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ataque", "Defensa" }));
+        pnlInvocar.add(cmbPosicion);
+        cmbPosicion.setBounds(640, 26, 110, 26);
+
+        lblTipo.setText("Tipo:");
+        pnlInvocar.add(lblTipo);
+        lblTipo.setBounds(15, 60, 60, 26);
+
+        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Efecto (daño perforante)" }));
+        pnlInvocar.add(cmbTipo);
+        cmbTipo.setBounds(75, 60, 200, 26);
+
+        lblDueno.setText("Dueño:");
+        pnlInvocar.add(lblDueno);
+        lblDueno.setBounds(295, 60, 50, 26);
+
+        cmbDueno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jugador 1", "Jugador 2" }));
+        pnlInvocar.add(cmbDueno);
+        cmbDueno.setBounds(345, 60, 210, 26);
+
+        btnAgregar.setText("Invocar");
+        pnlInvocar.add(btnAgregar);
+        btnAgregar.setBounds(785, 40, 170, 32);
+
+        pnlFondo.add(pnlInvocar);
+        pnlInvocar.setBounds(15, 426, 970, 96);
+
+        pnlHistorial.setBackground(new java.awt.Color(255, 255, 255));
+        pnlHistorial.setBorder(javax.swing.BorderFactory.createTitledBorder("Historial de combate"));
+        pnlHistorial.setLayout(null);
+
+        txtHistorial.setColumns(20);
+        txtHistorial.setEditable(false);
+        txtHistorial.setLineWrap(true);
+        txtHistorial.setRows(5);
+        txtHistorial.setWrapStyleWord(true);
+        scrHistorial.setViewportView(txtHistorial);
+
+        pnlHistorial.add(scrHistorial);
+        scrHistorial.setBounds(15, 24, 755, 112);
+
+        btnVerHistorial.setText("Historial guardado");
+        pnlHistorial.add(btnVerHistorial);
+        btnVerHistorial.setBounds(785, 24, 170, 32);
+
+        pnlFondo.add(pnlHistorial);
+        pnlHistorial.setBounds(15, 532, 970, 148);
 
         getContentPane().add(pnlFondo, java.awt.BorderLayout.CENTER);
 
@@ -181,27 +324,54 @@ public class VistaDuelo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAtacar;
+    private javax.swing.JButton btnCambiarPosicion;
     private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton btnTerminarTurno;
+    private javax.swing.JButton btnVerHistorial;
+    private javax.swing.JComboBox<String> cmbAtacante;
+    private javax.swing.JComboBox<String> cmbDueno;
+    private javax.swing.JComboBox<String> cmbObjetivo;
+    private javax.swing.JComboBox<String> cmbPosicion;
+    private javax.swing.JComboBox<String> cmbTipo;
+    private javax.swing.JLabel lblAtacante;
+    private javax.swing.JLabel lblAtaque;
     private javax.swing.JLabel lblCampo1;
     private javax.swing.JLabel lblCampo2;
+    private javax.swing.JLabel lblDefensa;
+    private javax.swing.JLabel lblDueno;
     private javax.swing.JLabel lblJugador1;
     private javax.swing.JLabel lblJugador2;
     private javax.swing.JLabel lblLp1;
     private javax.swing.JLabel lblLp2;
     private javax.swing.JLabel lblNombre1;
     private javax.swing.JLabel lblNombre2;
+    private javax.swing.JLabel lblNombreMonstruo;
+    private javax.swing.JLabel lblObjetivo;
+    private javax.swing.JLabel lblPosicion;
     private javax.swing.JLabel lblSubtitulo;
+    private javax.swing.JLabel lblTipo;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTurno;
     private javax.swing.JList<String> lstCampo1;
     private javax.swing.JList<String> lstCampo2;
+    private javax.swing.JPanel pnlBatalla;
     private javax.swing.JPanel pnlEncabezado;
     private javax.swing.JPanel pnlFondo;
+    private javax.swing.JPanel pnlHistorial;
     private javax.swing.JPanel pnlInicio;
+    private javax.swing.JPanel pnlInvocar;
     private javax.swing.JPanel pnlJugador1;
     private javax.swing.JPanel pnlJugador2;
     private javax.swing.JScrollPane scrCampo1;
     private javax.swing.JScrollPane scrCampo2;
+    private javax.swing.JScrollPane scrHistorial;
+    private javax.swing.JTextField txtAtaque;
+    private javax.swing.JTextField txtDefensa;
+    private javax.swing.JTextArea txtHistorial;
     private javax.swing.JTextField txtJugador1;
     private javax.swing.JTextField txtJugador2;
+    private javax.swing.JTextField txtNombreMonstruo;
     // End of variables declaration//GEN-END:variables
 }
